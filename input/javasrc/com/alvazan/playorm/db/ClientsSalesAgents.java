@@ -1,7 +1,5 @@
 package com.alvazan.playorm.db;
 
-import com.alvazan.orm.api.base.NoSqlEntityManager;
-import com.alvazan.orm.api.base.Query;
 import com.alvazan.orm.api.base.anno.NoSqlEntity;
 import com.alvazan.orm.api.base.anno.NoSqlId;
 import com.alvazan.orm.api.base.anno.NoSqlIndexed;
@@ -9,8 +7,6 @@ import com.alvazan.orm.api.base.anno.NoSqlManyToOne;
 import com.alvazan.orm.api.base.anno.NoSqlPartitionByThisField;
 import com.alvazan.orm.api.base.anno.NoSqlQueries;
 import com.alvazan.orm.api.base.anno.NoSqlQuery;
-import com.alvazan.orm.api.z8spi.KeyValue;
-import com.alvazan.orm.api.z8spi.iter.Cursor;
 
 @NoSqlEntity
 @NoSqlQueries({
@@ -29,7 +25,7 @@ public class ClientsSalesAgents {
 
 	@NoSqlPartitionByThisField
 	@NoSqlManyToOne
-	private Client accountNumber;
+	private Client client;
 	
 	public String getId() {
 		return id;
@@ -39,19 +35,27 @@ public class ClientsSalesAgents {
 		this.id = id;
 	}
 
-	public static Cursor<KeyValue<ClientsSalesAgents>> findBetween(NoSqlEntityManager mgr, String partitionId, long low, long high) {
-		Query<ClientsSalesAgents> query = mgr.createNamedQuery(ClientsSalesAgents.class, "findBetween");
-		query.setParameter("partition", partitionId);
-		query.setParameter("low", low);
-		query.setParameter("high", high);
-		return query.getResults();
+	public long getNumSalesTotal() {
+		return numSalesTotal;
 	}
 
-	public static Cursor<KeyValue<ClientsSalesAgents>> findOther(NoSqlEntityManager mgr, String partitionId, long low, long price) {
-		Query<ClientsSalesAgents> query = mgr.createNamedQuery(ClientsSalesAgents.class, "findOther");
-		query.setParameter("partition", partitionId);
-		query.setParameter("low", low);
-		query.setParameter("price", price);
-		return query.getResults();
+	public void setNumSalesTotal(long numSalesTotal) {
+		this.numSalesTotal = numSalesTotal;
+	}
+
+	public int getYearsExperience() {
+		return yearsExperience;
+	}
+
+	public void setYearsExperience(int yearsExperience) {
+		this.yearsExperience = yearsExperience;
+	}
+
+	public Client getClient() {
+		return client;
+	}
+
+	public void setClient(Client client) {
+		this.client = client;
 	}
 }

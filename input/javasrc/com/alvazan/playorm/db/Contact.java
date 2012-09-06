@@ -17,7 +17,7 @@ import com.alvazan.orm.api.z8spi.iter.Cursor;
 	@NoSqlQuery(name="findWithJoin", query="PARTITIONS agent(:partition) c(:partition) SELECT c FROM TABLE as c " +
 			"INNER JOIN c.agentForThisContact as agent WHERE c.age > :age and agent.yearsExperience > :years")
 })
-public class Contacts {
+public class Contact {
 
 	@NoSqlId
 	private String id;
@@ -27,7 +27,7 @@ public class Contacts {
 
 	@NoSqlPartitionByThisField
 	@NoSqlManyToOne
-	private Client accountNumber;
+	private Client client;
 	
 	@NoSqlManyToOne
 	private ClientsSalesAgents agentForThisContact;
@@ -48,12 +48,12 @@ public class Contacts {
 		this.age = age;
 	}
 
-	public Client getAccountNumber() {
-		return accountNumber;
+	public Client getClient() {
+		return client;
 	}
 
-	public void setAccountNumber(Client accountNumber) {
-		this.accountNumber = accountNumber;
+	public void setClient(Client accountNumber) {
+		this.client = accountNumber;
 	}
 
 	public ClientsSalesAgents getAgentForThisContact() {
@@ -64,11 +64,11 @@ public class Contacts {
 		this.agentForThisContact = agentForThisContact;
 	}
 
-	public static Cursor<KeyValue<ClientsSalesAgents>> findBetween(NoSqlEntityManager mgr, String partitionId, long low, long high) {
+	public static Cursor<KeyValue<ClientsSalesAgents>> findBetween(NoSqlEntityManager mgr, Client partitionId, long age, int yearsExperience) {
 		Query<ClientsSalesAgents> query = mgr.createNamedQuery(ClientsSalesAgents.class, "findBetween");
 		query.setParameter("partition", partitionId);
-		query.setParameter("low", low);
-		query.setParameter("high", high);
+		query.setParameter("age", age);
+		query.setParameter("years", yearsExperience);
 		return query.getResults();
 	}
 }

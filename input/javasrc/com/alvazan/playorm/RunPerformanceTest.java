@@ -10,7 +10,7 @@ import com.alvazan.util.WriteData;
 
 public class RunPerformanceTest {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InterruptedException {
 		if(args.length != 3)
 			throw new IllegalArgumentException("Arguments must be <seeds> <clusterName> <testtype> where " +
 					"testtype is 'writedata' or 'betweenquery' or 'otherquery' or 'innerjoin'");
@@ -22,7 +22,7 @@ public class RunPerformanceTest {
 		NoSqlEntityManagerFactory factory = Bootstrap.create(DbTypeEnum.CASSANDRA, props, null, null);
 		
 		if("writedata".equalsIgnoreCase(testType)) {
-			WriteData d = new WriteData(factory);
+			WriteData d = new WriteData(new NoSqlListener(factory));
 			d.startTest();
 		} else if("betweenquery".equalsIgnoreCase(testType)) {
 			

@@ -1,5 +1,6 @@
 *.class
-
+output/
+eclipsegen/
 # Package Files #
 *.jar
 *.war

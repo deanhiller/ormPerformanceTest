@@ -6,7 +6,7 @@
         </layout>
     </appender>
  
-    <logger name="com.alvazan.orm.logging" level="INFO"/>
+    <logger name="com.alvazan.orm.logging" level="WARN"/>
  
     <root>
         <level value="INFO" />

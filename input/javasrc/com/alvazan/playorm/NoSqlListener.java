@@ -15,21 +15,26 @@ public class NoSqlListener implements WriteListenerCreator {
 
 	@Override
 	public WriteListener createListener() {
-		return new NoSqlWriteListener(factory.createEntityManager());
+		return new NoSqlWriteListener(factory);
 	}
 
 	private static class NoSqlWriteListener implements WriteListener {
 		private NoSqlEntityManager mgr;
-		public NoSqlWriteListener(NoSqlEntityManager mgr) {
-			this.mgr = mgr;
-		}
-		@Override
-		public void flush() {
-			mgr.flush();
+		private NoSqlEntityManagerFactory factory;
+		public NoSqlWriteListener(NoSqlEntityManagerFactory factory) {
+			this.factory = factory;
 		}
 		@Override
 		public void saveEntity(Object entity) {
 			mgr.put(entity);
+		}
+		@Override
+		public void startTransaction() {
+			mgr = factory.createEntityManager();
+		}
+		@Override
+		public void commitTransation() {
+			mgr.flush();
 		}
 	}
 }

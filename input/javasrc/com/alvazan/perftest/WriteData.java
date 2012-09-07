@@ -14,8 +14,8 @@ public class WriteData {
 	private static final Logger log = LoggerFactory.getLogger(WriteData.class);
 	
 	private static final int NUM_THREADS = 10;
-	private static int numRows = 100000;
-	private static final int BATCH_SIZE = 1;
+	private static int numRows = 1000000;
+	private static final int BATCH_SIZE = 50;
 	private static final int LOG_EVERY_N = 1000;
 	
 	private ExecutorService exec = Executors.newFixedThreadPool(NUM_THREADS, new OurFactory());
@@ -74,23 +74,23 @@ public class WriteData {
 			int rowCount = 0;
 			while(rowCount < numRows) {
 				rowCount = processBatch(rowCount);
-				listener.flush();
 				if(!wroteRow) {
 					log.info("threadid="+threadId+" wrote first row");
 					wroteRow = true;
 				}
-				
 			}
 			
 			latch.countDown();
 		}
 
 		private int processBatch(int rowCount) {
+			listener.startTransaction();
 			for(int i = 0; i < BATCH_SIZE && rowCount < numRows; i++) {
 				createAndSaveRow(rowCount);
 				addRows();
 				rowCount++;
 			}
+			listener.commitTransation();
 			return rowCount;
 		}
 

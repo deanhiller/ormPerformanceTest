@@ -1,4 +1,4 @@
-package com.alvazan.playorm.db;
+package com.alvazan.perftest.db;
 
 import com.alvazan.orm.api.base.NoSqlEntityManager;
 import com.alvazan.orm.api.base.Query;
@@ -13,8 +13,8 @@ import com.alvazan.orm.api.z8spi.iter.Cursor;
 
 @NoSqlEntity
 @NoSqlQueries({
-	@NoSqlQuery(name="findBetween", query="PARTITIONS n(:partition) SELECT n FROM TABLE as n WHERE n.numShares > :low and n.numShares <= :high"),
-	@NoSqlQuery(name="findOther", query="PARTITIONS n(:partition) SELECT n FROM TABLE as n WHERE n.numShares > :low and n.pricePerShares < :price")
+	@NoSqlQuery(name="findBetween", query="PARTITIONS n(:partition) SELECT n FROM TABLE as n WHERE n.numShares >= :low and n.numShares < :high"),
+	@NoSqlQuery(name="findOther", query="PARTITIONS n(:partition) SELECT n FROM TABLE as n WHERE n.numShares >= :low and n.pricePerShare >= :price")
 })
 public class NoJoinEntity {
 
@@ -64,13 +64,14 @@ public class NoJoinEntity {
 
 	public static Cursor<KeyValue<NoJoinEntity>> findBetween(NoSqlEntityManager mgr, String partitionId, long low, long high) {
 		Query<NoJoinEntity> query = mgr.createNamedQuery(NoJoinEntity.class, "findBetween");
+		query.setBatchSize(500);
 		query.setParameter("partition", partitionId);
 		query.setParameter("low", low);
 		query.setParameter("high", high);
 		return query.getResults();
 	}
 
-	public static Cursor<KeyValue<NoJoinEntity>> findOther(NoSqlEntityManager mgr, String partitionId, long low, long price) {
+	public static Cursor<KeyValue<NoJoinEntity>> findOther(NoSqlEntityManager mgr, String partitionId, long low, int price) {
 		Query<NoJoinEntity> query = mgr.createNamedQuery(NoJoinEntity.class, "findOther");
 		query.setParameter("partition", partitionId);
 		query.setParameter("low", low);

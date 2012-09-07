@@ -1,4 +1,4 @@
-package com.alvazan.playorm.db;
+package com.alvazan.perftest.db;
 
 import com.alvazan.orm.api.base.anno.NoSqlEntity;
 import com.alvazan.orm.api.base.anno.NoSqlId;
@@ -9,9 +9,6 @@ import com.alvazan.orm.api.base.anno.NoSqlQueries;
 import com.alvazan.orm.api.base.anno.NoSqlQuery;
 
 @NoSqlEntity
-@NoSqlQueries({
-	@NoSqlQuery(name="findBetween", query="PARTITIONS n(:partition) SELECT n FROM TABLE as n WHERE n.numShares > :low and n.numShares <= :high")
-})
 public class ClientsSalesAgents {
 
 	@NoSqlId

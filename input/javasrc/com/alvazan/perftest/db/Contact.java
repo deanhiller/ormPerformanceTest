@@ -1,4 +1,4 @@
-package com.alvazan.playorm.db;
+package com.alvazan.perftest.db;
 
 import com.alvazan.orm.api.base.NoSqlEntityManager;
 import com.alvazan.orm.api.base.Query;
@@ -14,7 +14,7 @@ import com.alvazan.orm.api.z8spi.iter.Cursor;
 
 @NoSqlEntity
 @NoSqlQueries({
-	@NoSqlQuery(name="findWithJoin", query="PARTITIONS agent(:partition) c(:partition) SELECT c FROM TABLE as c " +
+	@NoSqlQuery(name="findWithJoin", query="PARTITIONS agent(:partition),c(:partition) SELECT c FROM TABLE as c " +
 			"INNER JOIN c.agentForThisContact as agent WHERE c.age > :age and agent.yearsExperience > :years")
 })
 public class Contact {
@@ -30,6 +30,7 @@ public class Contact {
 	private Client client;
 	
 	@NoSqlManyToOne
+	@NoSqlIndexed
 	private ClientsSalesAgents agentForThisContact;
 	
 	public String getId() {

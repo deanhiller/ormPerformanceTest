@@ -6,6 +6,8 @@
         </layout>
     </appender>
  
+    <logger name="com.alvazan.orm.logging" level="INFO"/>
+ 
     <root>
         <level value="INFO" />
         <appender-ref ref="STDOUT" />

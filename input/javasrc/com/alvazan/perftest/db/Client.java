@@ -1,4 +1,4 @@
-package com.alvazan.playorm.db;
+package com.alvazan.perftest.db;
 
 import com.alvazan.orm.api.base.anno.NoSqlEntity;
 import com.alvazan.orm.api.base.anno.NoSqlId;

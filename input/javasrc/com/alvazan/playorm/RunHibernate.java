@@ -20,16 +20,24 @@ public class RunHibernate {
 	private static final Logger log = LoggerFactory.getLogger(RunHibernate.class);
 	
 	public static void main(String[] args) throws InterruptedException {
-		Map<String, Object> props = new HashMap<String, Object>();
-//		if(args.length != 3)
-//			throw new IllegalArgumentException("Arguments must be <seeds> <clusterName> <testtype> where " +
-//					"testtype is 'writedata' or 'betweenquery' or 'otherquery' or 'innerjoin'");
-//		String clusterName = args[0];
-//		String seeds = args[1];
-//		String testType = args[2];
-		String seeds = "localhost:9160";
-		String testType = "writenojoin";
-		EntityManagerFactory factory = Persistence.createEntityManagerFactory("inmemory"); 
+		Map<String, String> props = new HashMap<String, String>();
+		if(args.length != 4)
+			throw new IllegalArgumentException("Arguments must be <jdbcUrl> <username> <password> <testtype> where " +
+					"testtype is 'writenojoin' or 'betweenquery' or 'otherquery' or 'innerjoin'");
+		String jdbcUrl = args[0];
+		String username = args[1];
+		String password = args[2];
+		String testType = args[3];
+//		String jdbcUrl = "localhost:9160";
+//		String username = "sa";
+//		String password = "";
+//		String testType = "writenojoin";
+
+		props.put("hibernate.connection.username", username);
+		props.put("hibernate.connection.password", password);
+		props.put("hibernate.connection.url", jdbcUrl);
+		//props.put("hibernate.connection.url", "jdbc:h2:mem:test_mem;MVCC=true");
+		EntityManagerFactory factory = Persistence.createEntityManagerFactory("postgres", props); 
 		
 		if("writenojoin".equalsIgnoreCase(testType)) {
 			WriteData d = new WriteData(new HibernateNoSqlListener(factory));
@@ -42,6 +50,8 @@ public class RunHibernate {
 			runOtherQuery(factory);
 		} else if("innerjoin".equals(testType)) {
 			
+		} else {
+			throw new IllegalArgumentException("test type="+testType+" not supported. check the code to see what is supported.");
 		}
 	}
 

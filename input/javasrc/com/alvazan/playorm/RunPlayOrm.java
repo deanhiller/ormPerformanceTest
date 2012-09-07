@@ -29,16 +29,15 @@ public class RunPlayOrm {
 	
 	public static void main(String[] args) throws InterruptedException {
 		Map<String, Object> props = new HashMap<String, Object>();
-//		if(args.length != 3)
-//			throw new IllegalArgumentException("Arguments must be <seeds> <clusterName> <testtype> where " +
-//					"testtype is 'writedata' or 'betweenquery' or 'otherquery' or 'innerjoin'");
-//		String clusterName = args[0];
-//		String seeds = args[1];
-//		String testType = args[2];
-		String clusterName = "cluster";
-		//String seeds = "localhost:9160";
-		String seeds = "a1.bigde.nrel.gov:9160,a2.bigde.nrel.gov:9160,a3.bigde.nrel.gov:9160";
-		String testType = "otherquery";
+		if(args.length != 3)
+			throw new IllegalArgumentException("Arguments must be <seeds> <clusterName> <testtype> where " +
+					"testtype is 'writedata' or 'betweenquery' or 'otherquery' or 'innerjoin'");
+		String clusterName = args[0];
+		String seeds = args[1];
+		String testType = args[2];
+//		String clusterName = "cluster";
+//		String seeds = "localhost:9160";
+//		String testType = "otherquery";
 		createAndAddBestCassandraConfiguration(props , clusterName, "PlayOrmPerfTest", seeds );
 		props.put(Bootstrap.AUTO_CREATE_KEY, "create");
 		NoSqlEntityManagerFactory factory = Bootstrap.create(DbTypeEnum.CASSANDRA, props, null, null);

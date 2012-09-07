@@ -10,9 +10,6 @@
 	             <property name="transaction.flush_before_completion" value="true"/>
 	         <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
 	         <property name="hibernate.connection.driver_class" value="org.h2.Driver"/>
-	         <property name="hibernate.connection.username" value="sa"/>
-	         <property name="hibernate.connection.password" value=""/>
-	         <property name="hibernate.connection.url" value="jdbc:h2:mem:test_mem;MVCC=true"/>
 	         <property name="hibernate.max_fetch_depth" value="3"/>
 	         <property name="hibernate.show_sql" value="false"/>
              <property name="hibernate.format_sql" value="true"/>
@@ -23,16 +20,13 @@
 	         <property name="hibernate.query.substitutions" value="true 1, false 0, yes 'Y', no 'N'"/>
           </properties>
 	   </persistence-unit>                         
-        <persistence-unit name="perftest">
+        <persistence-unit name="postgres">
           <provider>org.hibernate.ejb.HibernatePersistence</provider>
 	      <properties>
 	         <property name="hibernate.hbm2ddl.auto" value="update"/>
 	             <property name="transaction.flush_before_completion" value="true"/>
 	         <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
-	         <property name="hibernate.connection.driver_class" value="net.sf.log4jdbc.DriverSpy"/>
-	         <property name="hibernate.connection.username" value="application"/>
-	         <property name="hibernate.connection.password" value="application123"/>
-	         <property name="hibernate.connection.url" value="jdbc:log4jdbc:postgresql://127.0.0.1/requirements"/>
+	         <property name="hibernate.connection.driver_class" value="org.postgresql.Driver"/>
 	         <property name="hibernate.max_fetch_depth" value="3"/>
 	         <property name="hibernate.show_sql" value="false"/>
 	                 <property name="hibernate.format_sql" value="true"/>
